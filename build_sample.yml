@@ -1,0 +1,9 @@
+sdks:
+- iphoneos
+- iphonesimulator
+archs:
+    iphoneos:
+    - armv7
+workspace: MyProject.xcworkspace
+scheme: MyScheme
+product_name: MyProduct
