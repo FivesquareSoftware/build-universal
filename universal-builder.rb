@@ -172,9 +172,9 @@ class UniversalBuilder
 				platform_name = sdk[/(iphone[^\d]+).*/,1]
 
 				if self.options.workspace && self.options
-					what_to_build_opt = "-workspace #{self.options.workspace} -scheme #{self.options.scheme}";
+					what_to_build_opt = "-workspace \"#{self.options.workspace}\" -scheme #{self.options.scheme}";
 				else
-					what_to_build_opt = "-target #{self.options.target}";
+					what_to_build_opt = "-target \"#{self.options.target}\"";
 				end
 				config_opt = "-configuration #{configuration}"
 				sdk_opt = "-sdk #{sdk}"
@@ -185,7 +185,7 @@ class UniversalBuilder
 				log "Overriding default archs with #{archs.inspect}" if archs
 				archs_opt = archs ? "ARCHS=\"#{archs.join(' ')}\"" : ''
 				
-				build_dir_opt = "BUILD_DIR=#{self.options.build_dir} BUILD_ROOT=#{self.options.build_dir}"
+				build_dir_opt = "BUILD_DIR=\"#{self.options.build_dir}\" BUILD_ROOT=\"#{self.options.build_dir}\""
 
 				cmd = "#{self.options.xcodebuild} #{what_to_build_opt} #{config_opt} #{sdk_opt} #{archs_opt} #{build_dir_opt} clean build"
 				log "Issuing build command: #{cmd}"
@@ -210,7 +210,7 @@ class UniversalBuilder
 	
 	def lipo(products, path)
 		
-		cmd = "lipo #{products.join(' ')} -create -output #{path}"
+		cmd = "lipo " + products.collect {|e| %{"#{e}"}}.join(' ') + " -create -output \"#{path}\""
 		log "Issuing lipo command: #{cmd}"
 		unless self.options.dry_run
 			system(cmd) 
